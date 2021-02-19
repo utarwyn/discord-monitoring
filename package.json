@@ -1,0 +1,26 @@
+{
+  "name": "discord-monitoring",
+  "version": "1.0.0",
+  "description": "Ultimate Discord bot to get all services status in your server",
+  "author": "Utarwyn <maximemalgorn@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/utarwyn/discord-monitoring.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "monitoring",
+    "status",
+    "nodejs",
+    "typescript"
+  ],
+  "bugs": {
+    "url": "https://github.com/utarwyn/discord-monitoring/issues"
+  },
+  "homepage": "https://github.com/utarwyn/discord-monitoring#readme",
+  "engines": {
+    "node": ">= 14.0.0"
+  }
+}

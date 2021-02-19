@@ -16,7 +16,7 @@ Created with <a href="https://github.com/discordjs/discord.js">discord.js</a>.
     <a href="https://github.com/utarwyn/discord-monitoring/releases">
         <img src="https://img.shields.io/github/package-json/v/utarwyn/discord-monitoring" alt="Npm version">
     </a>
-    <a href="https://github.com/utarwyn/discord-monitoring/blob/master/LICENSE">
+    <a href="https://github.com/utarwyn/discord-monitoring/blob/main/LICENSE">
         <img src="https://img.shields.io/github/license/utarwyn/discord-monitoring" alt="License">
     </a>
 </p>
@@ -35,7 +35,7 @@ License
 
 [1]: https://hub.docker.com/r/utarwyn/discord-monitoring
 [2]: https://www.npmjs.com/package/discord-monitoring
-[3]: https://github.com/utarwyn/discord-monitoring/blob/master/LICENSE
+[3]: https://github.com/utarwyn/discord-monitoring/blob/main/LICENSE
 [4]: https://github.com/utarwyn
 [5]: https://twitter.com/Utarwyn
 [6]: https://discordapp.com/developers/applications
