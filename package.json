@@ -4,6 +4,10 @@
   "description": "Ultimate Discord bot to get all services status in your server",
   "author": "Utarwyn <maximemalgorn@gmail.com>",
   "license": "Apache-2.0",
+  "main": "dist/src/index.js",
+  "bin": {
+    "monitoring": "dist/bin/monitoring.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/utarwyn/discord-monitoring.git"
@@ -20,7 +24,41 @@
     "url": "https://github.com/utarwyn/discord-monitoring/issues"
   },
   "homepage": "https://github.com/utarwyn/discord-monitoring#readme",
+  "devDependencies": {
+    "@types/i18n": "^0.8.8",
+    "@types/jest": "~25.2.1",
+    "@types/node": "^14.14.20",
+    "@types/ws": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "~2.32.0",
+    "@typescript-eslint/parser": "~2.32.0",
+    "eslint": "~7.0.0",
+    "eslint-config-prettier": "~6.11.0",
+    "eslint-plugin-jest": "~23.10.0",
+    "jest": "~25.2.7",
+    "prettier": "~2.0.5",
+    "replace-in-file": "^6.0.0",
+    "rimraf": "~3.0.2",
+    "ts-jest": "~25.5.1",
+    "typescript": "~3.8.3"
+  },
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "i18n": "^0.10.0"
+  },
   "engines": {
     "node": ">= 14.0.0"
+  },
+  "scripts": {
+    "clean": "rimraf coverage build tmp",
+    "build": "tsc -p tsconfig.release.json",
+    "build:watch": "tsc -w -p tsconfig.release.json",
+    "format:check": "prettier --config .prettierrc --list-different \"**/**.ts\"",
+    "format": "prettier --config .prettierrc --write \"**/**.ts\"",
+    "lint": "eslint . --ext .ts,.tsx",
+    "serve": "node lib/replacePaths.js && node dist/bin/monitoring.js",
+    "start": "npm run build && npm run serve",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "release": "npm run clean && npm run lint && npm run test && npm run format && npm run build && node lib/replacePaths.js"
   }
 }
