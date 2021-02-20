@@ -1,0 +1,22 @@
+{
+  "common": {
+    "status": "Statut",
+    "updated-at": "Mise à jour le"
+  },
+  "incident": {
+    "colors": {
+      "scheduled": "#e67e22",
+      "investigating": "#f1c40f",
+      "identified": "#3498db",
+      "watching": "#9b59b6",
+      "fixed": "#2ecc71"
+    },
+    "status": {
+      "scheduled": "Maintenance planifiée",
+      "investigating": "En cours d'investigation",
+      "identified": "Problème identifié",
+      "watching": "Suivi en cours",
+      "fixed": "Corrigé"
+    }
+  }
+}
