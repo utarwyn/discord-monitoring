@@ -1,5 +1,7 @@
 export enum EventBusTopic {
-    BOT_CONNECTED,
+    DISCORD_GUILD_ADD,
+    DISCORD_GUILD_CONNECT,
+    DISCORD_GUILD_REMOVE,
     INCIDENT_UPDATE
 }
 

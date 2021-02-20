@@ -1,4 +1,5 @@
-import { EventBus, EventBusTopic } from '@bot/event-bus';
+import { EventBusTopic } from '@bot/event-bus';
+import { MonitoringManager } from '@monitor/manager';
 import { CachetIncident, CachetIncidentStatusEnum } from '@monitor/models/cachet';
 import { Service } from '@monitor/service';
 import { Util } from '@monitor/util';
@@ -8,8 +9,8 @@ export class CachetService extends Service {
 
     private lastId?: number;
 
-    constructor(eventBus: EventBus, endpoint: string) {
-        super(eventBus);
+    constructor(manager: MonitoringManager, endpoint: string) {
+        super(manager);
         this.endpoint = endpoint;
     }
 
@@ -23,11 +24,14 @@ export class CachetService extends Service {
         const incident = await this.getLastIncident();
         if (incident && this.lastId !== incident.id) {
             this.lastId = incident.id;
-            this.eventBus.publish(EventBusTopic.INCIDENT_UPDATE, {
-                title: incident.name,
-                status: CachetIncidentStatusEnum[incident.status],
-                content: incident.message,
-                updatedAt: incident.updatedAt
+            this.manager.eventBus.publish(EventBusTopic.INCIDENT_UPDATE, {
+                channels: this.manager.alertChannels,
+                incident: {
+                    title: incident.name,
+                    status: CachetIncidentStatusEnum[incident.status],
+                    content: incident.message,
+                    updatedAt: incident.updatedAt
+                }
             });
         }
     }

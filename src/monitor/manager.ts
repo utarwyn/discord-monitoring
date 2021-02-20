@@ -1,22 +1,58 @@
-import { EventBus, EventBusTopic } from '@bot/event-bus';
+import { EventBus } from '@bot/event-bus';
+import { MonitoringDatabase } from '@database/index';
+import { GuildChannel } from '@database/schemas/guild-channel';
+import { DatabaseStatementEnum } from '@database/statement';
 import { Service } from '@monitor/service';
-import { CachetService } from '@monitor/services/cachet-service';
+import { CachetService } from './services/cachet-service';
 
 /**
  * @author Utarwyn
  * @since 1.0.0
  */
 export class MonitoringManager {
+    public readonly eventBus: EventBus;
+
+    private readonly guildId: string;
+
+    private readonly database: MonitoringDatabase;
+
     private services: Service[];
 
-    constructor(eventBus: EventBus) {
-        this.services = [new CachetService(eventBus, 'https://demo.cachethq.io')];
-        eventBus.subscribe(EventBusTopic.BOT_CONNECTED, this.start.bind(this));
+    private _alertChannels: string[];
+
+    constructor(eventBus: EventBus, guildId: string, database: MonitoringDatabase) {
+        this.eventBus = eventBus;
+        this.guildId = guildId;
+        this.database = database;
+        this.services = [new CachetService(this, 'https://demo.cachethq.io')];
+        this._alertChannels = [];
     }
 
-    public start(): void {
+    public get alertChannels(): string[] {
+        return this._alertChannels;
+    }
+
+    public async start(): Promise<void> {
+        this._alertChannels = (
+            await this.database.findAll<GuildChannel>(
+                DatabaseStatementEnum.FIND_GUILD_CHANNELS,
+                this.guildId
+            )
+        )?.map(guild => guild.channel_id);
+
         this.services.forEach(service => service.start());
         setInterval(this.update.bind(this), 60000);
+    }
+
+    public async addAlertChannel(channelId: string): Promise<void> {
+        if (!this.alertChannels.includes(channelId)) {
+            this.alertChannels.push(channelId);
+            await this.database.run(
+                DatabaseStatementEnum.INSERT_GUILD_CHANNEL,
+                this.guildId,
+                channelId
+            );
+        }
     }
 
     private update(): void {

@@ -1,14 +1,14 @@
-import { EventBus } from '@bot/event-bus';
+import { MonitoringManager } from '@monitor/manager';
 
 /**
  * @author Utarwyn
  * @since 1.0.0
  */
 export abstract class Service {
-    protected readonly eventBus: EventBus;
+    protected readonly manager: MonitoringManager;
 
-    constructor(eventBus: EventBus) {
-        this.eventBus = eventBus;
+    constructor(manager: MonitoringManager) {
+        this.manager = manager;
     }
 
     public abstract start(): void;

@@ -9,10 +9,11 @@ coverage
 dist/
 package-lock.json
 
-# Configuration
+# Configuration and database
 config/*
 !config/locales/
 !config/config.example.json
+/monitoring.db
 
 # VS Code
 .vscode

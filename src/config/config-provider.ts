@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import { Config } from './Config';
+import { Config } from './config';
 
 /**
  * @author Utarwyn
@@ -9,7 +9,8 @@ import { Config } from './Config';
 export class ConfigProvider implements Config {
     public token = '';
     public language = 'en';
-    public channelId = '';
+    public prefix = 'm$';
+    public databaseFilePath = 'monitoring.db';
 
     [key: string]: any;
 

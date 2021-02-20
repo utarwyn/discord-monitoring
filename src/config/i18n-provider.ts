@@ -1,7 +1,7 @@
 import i18n from 'i18n';
 import fs from 'fs';
 import path from 'path';
-import { I18n, Replacements } from './I18n';
+import { I18n, Replacements } from './i18n';
 
 /**
  * @author Utarwyn

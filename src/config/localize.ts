@@ -1,5 +1,5 @@
-import { I18nProvider } from './I18nProvider';
-import { Replacements } from './I18n';
+import { I18nProvider } from './i18n-provider';
+import { Replacements } from './i18n';
 
 const provider = new I18nProvider();
 

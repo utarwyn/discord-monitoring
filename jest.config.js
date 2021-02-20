@@ -8,6 +8,7 @@ module.exports = {
     moduleNameMapper: {
         '@bot/(.*)': '<rootDir>/src/bot/$1',
         '@config/(.*)': '<rootDir>/src/config/$1',
+        '@database/(.*)': '<rootDir>/src/database/$1',
         '@monitor/(.*)': '<rootDir>/src/monitor/$1'
     },
     moduleFileExtensions: ['js', 'json', 'ts'],

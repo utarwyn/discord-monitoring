@@ -12,7 +12,11 @@ export interface Config {
      */
     language?: string;
     /**
-     * Identifier of the channel which will receive alerts.
+     * Prefix for all module's commands.
      */
-    channelId?: string;
+    prefix?: string;
+    /**
+     * Path where to store internal database.
+     */
+    databaseFilePath?: string;
 }

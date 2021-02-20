@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { ConfigProvider } from '@config/ConfigProvider';
+import { ConfigProvider } from '@config/config-provider';
 import Monitoring from '../src';
 
 new Monitoring(new ConfigProvider())

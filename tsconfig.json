@@ -11,6 +11,7 @@
     "paths": {
       "@bot/*": ["src/bot/*"],
       "@config/*": ["src/config/*"],
+      "@database/*": ["src/database/*"],
       "@monitor/*": ["src/monitor/*"]
     },
     "incremental": true
