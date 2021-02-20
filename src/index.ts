@@ -4,7 +4,6 @@ import { MonitoringBot } from '@bot/index';
 import { Config } from '@config/Config';
 import { MonitoringManager } from '@monitor/manager';
 import localize from '@config/localize';
-import { config } from 'process';
 
 /**
  * Controls all interactions of the bot.
@@ -17,8 +16,6 @@ class Monitoring {
 
     private readonly bot: MonitoringBot;
 
-    private readonly manager: MonitoringManager;
-
     constructor(configuration: Config) {
         this.configuration = configuration;
 
@@ -28,7 +25,7 @@ class Monitoring {
 
         const eventBus = new EventBus();
         this.bot = new MonitoringBot(eventBus);
-        this.manager = new MonitoringManager(eventBus);
+        new MonitoringManager(eventBus);
     }
 
     public async login(token?: string): Promise<void> {

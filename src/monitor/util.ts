@@ -2,8 +2,6 @@ import http from 'http';
 import https from 'https';
 
 export class Util {
-    private constructor() {}
-
     public static async fetch(endpoint: string): Promise<any> {
         const fetchModule = endpoint.startsWith('https') ? https : http;
         return new Promise((resolve, reject) => {
