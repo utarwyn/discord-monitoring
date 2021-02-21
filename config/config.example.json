@@ -1,5 +1,6 @@
 {
   "token": "",
   "language": "en",
-  "channelId": ""
+  "prefix": "m$",
+  "databaseFilePath": "monitoring.db"
 }

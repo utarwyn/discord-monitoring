@@ -29,7 +29,7 @@ class Monitoring {
 
         const eventBus = new EventBus();
 
-        this.bot = new MonitoringBot(eventBus);
+        this.bot = new MonitoringBot(eventBus, configuration.prefix ?? 'm$');
         this.setupManagers(eventBus);
     }
 

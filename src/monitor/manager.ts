@@ -1,9 +1,9 @@
-import { EventBus } from '@bot/event-bus';
+import { EventBus, EventBusTopic } from '@bot/event-bus';
 import { MonitoringDatabase } from '@database/index';
 import { GuildChannel } from '@database/schemas/guild-channel';
 import { DatabaseStatementEnum } from '@database/statement';
 import { Service } from '@monitor/service';
-import { CachetService } from './services/cachet-service';
+import { CachetService } from '@monitor/services/cachet-service';
 
 /**
  * @author Utarwyn
@@ -39,6 +39,11 @@ export class MonitoringManager {
                 this.guildId
             )
         )?.map(guild => guild.channel_id);
+
+        // TODO only subscribe on a specific guild
+        this.eventBus.subscribe(EventBusTopic.DISCORD_GUILD_CHANNEL_SETUP, ({ channelId }) => {
+            this.addAlertChannel(channelId);
+        });
 
         this.services.forEach(service => service.start());
         setInterval(this.update.bind(this), 60000);
