@@ -1,9 +1,10 @@
 import { EventBus, EventBusTopic } from '@bot/event-bus';
 import { MonitoringDatabase } from '@database/index';
-import { GuildChannel } from '@database/schemas/guild-channel';
+import { GuildChannelSchema } from '@database/schemas/guild-channel.schema';
+import { ServiceSchema } from '@database/schemas/service.schema';
 import { DatabaseStatementEnum } from '@database/statement';
 import { Service } from '@monitor/service';
-import { CachetService } from '@monitor/services/cachet-service';
+import { ServiceFactory } from '@monitor/services/factory';
 
 /**
  * @author Utarwyn
@@ -16,7 +17,7 @@ export class MonitoringManager {
 
     private readonly database: MonitoringDatabase;
 
-    private services: Service[];
+    private services: Service<any>[];
 
     private _alertChannels: string[];
 
@@ -24,7 +25,7 @@ export class MonitoringManager {
         this.eventBus = eventBus;
         this.guildId = guildId;
         this.database = database;
-        this.services = [new CachetService(this, 'https://demo.cachethq.io')];
+        this.services = [];
         this._alertChannels = [];
     }
 
@@ -33,12 +34,23 @@ export class MonitoringManager {
     }
 
     public async start(): Promise<void> {
+        // Retrieve guild alertable channels
         this._alertChannels = (
-            await this.database.findAll<GuildChannel>(
+            await this.database.findAll<GuildChannelSchema>(
                 DatabaseStatementEnum.FIND_GUILD_CHANNELS,
                 this.guildId
             )
         )?.map(guild => guild.channel_id);
+
+        // Retrieve guild services
+        this.services = (
+            await this.database.findAll<ServiceSchema>(
+                DatabaseStatementEnum.FIND_SERVICES,
+                this.guildId
+            )
+        )?.map(service =>
+            ServiceFactory.create(this, service.type, service.id, JSON.parse(service.options))
+        );
 
         // TODO only subscribe on a specific guild
         this.eventBus.subscribe(EventBusTopic.DISCORD_GUILD_CHANNEL_SETUP, ({ channelId }) => {

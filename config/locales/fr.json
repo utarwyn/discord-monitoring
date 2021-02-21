@@ -1,7 +1,7 @@
 {
   "common": {
     "status": "Statut",
-    "updated-at": "Mise à jour le"
+    "updated-at": "Mis à jour le"
   },
   "incident": {
     "colors": {

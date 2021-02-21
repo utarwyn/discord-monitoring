@@ -3,9 +3,21 @@ import { DatabaseStatementEnum } from '@database/statement';
 
 export class MonitoringDatabase {
     private static readonly SETUP = `
-        CREATE TABLE IF NOT EXISTS guilds_channels (
-            guild_id varchar(64) not null,
+        CREATE TABLE IF NOT EXISTS guilds_channels(
+            guild_id   varchar(64) not null,
             channel_id varchar(64) not null
+        );
+        CREATE TABLE IF NOT EXISTS services (
+            id       int(11)     not null primary key,
+            guild_id varchar(64) not null,
+            type     varchar(32) not null,
+            options  JSON default '{}'
+        );
+        CREATE TABLE IF NOT EXISTS incidents (
+            id         int(11)     not null primary key,
+            service_id int(11)     not null,
+            guild_id   varchar(64) not null,
+            message_id varchar(64) not null
         );
     `;
 

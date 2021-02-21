@@ -54,10 +54,10 @@ class Monitoring {
             this.configuration.databaseFilePath ?? 'monitoring.db'
         );
 
-        eventBus.subscribe(EventBusTopic.DISCORD_GUILD_CONNECT, guildId => {
+        eventBus.subscribe(EventBusTopic.DISCORD_GUILD_CONNECT, async guildId => {
             const manager = new MonitoringManager(eventBus, guildId, database);
             this.managers.push(manager);
-            manager.start();
+            await manager.start();
         });
     }
 }
