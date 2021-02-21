@@ -11,13 +11,14 @@ export class MonitoringDatabase {
             id       int(11)     not null primary key,
             guild_id varchar(64) not null,
             type     varchar(32) not null,
-            options  JSON default '{}'
+            options  JSON        not null default '{}'
         );
         CREATE TABLE IF NOT EXISTS incidents (
             id         int(11)     not null primary key,
             service_id int(11)     not null,
             guild_id   varchar(64) not null,
-            message_id varchar(64) not null
+            message_id varchar(64) not null,
+            updated_at timestamp   not null
         );
     `;
 

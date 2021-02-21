@@ -40,7 +40,9 @@ export class MonitoringBot {
             const command = this.commands.find(cmd => content.startsWith(cmd.name));
 
             if (command) {
-                command.run(message, content.substring(command.name.length + 1).split(' '));
+                if (!command.admin || message.member?.hasPermission('ADMINISTRATOR')) {
+                    command.run(message, content.substring(command.name.length + 1).split(' '));
+                }
             } else {
                 console.error('command not found for', content);
             }

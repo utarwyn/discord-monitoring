@@ -4,7 +4,7 @@ import { EventBus, EventBusTopic } from '@bot/event-bus';
 
 export class SetupCommand extends Command {
     constructor(eventBus: EventBus) {
-        super(eventBus, 'setup');
+        super(eventBus, 'setup', true);
     }
 
     async run(message: Message): Promise<void> {
