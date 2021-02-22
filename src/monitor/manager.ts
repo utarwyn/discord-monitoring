@@ -3,7 +3,7 @@ import { MonitoringDatabase } from '@database/index';
 import { GuildChannelSchema } from '@database/schemas/guild-channel.schema';
 import { ServiceSchema } from '@database/schemas/service.schema';
 import { DatabaseStatementEnum } from '@database/statement';
-import { Service } from '@monitor/service';
+import { Service, ServiceOptions } from '@monitor/service';
 import { ServiceFactory } from '@monitor/services/factory';
 
 /**
@@ -56,6 +56,9 @@ export class MonitoringManager {
         this.eventBus.subscribe(EventBusTopic.DISCORD_GUILD_CHANNEL_SETUP, ({ channelId }) => {
             this.addAlertChannel(channelId);
         });
+        this.eventBus.subscribe(EventBusTopic.SERVICE_CREATE, ({ type, options }) => {
+            this.addService(type, options);
+        });
 
         this.services.forEach(service => service.start());
         setInterval(this.update.bind(this), 60000);
@@ -69,6 +72,26 @@ export class MonitoringManager {
                 this.guildId,
                 channelId
             );
+        }
+    }
+
+    public async addService(type: string, options: ServiceOptions): Promise<void> {
+        try {
+            const id = this.services.length;
+            const service = ServiceFactory.create(this, type, id, options);
+
+            await this.database.run(
+                DatabaseStatementEnum.INSERT_SERVICE,
+                id,
+                this.guildId,
+                type,
+                JSON.stringify(options)
+            );
+
+            this.services.push(service);
+            service.start();
+        } catch (e) {
+            console.error(e);
         }
     }
 

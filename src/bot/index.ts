@@ -1,5 +1,6 @@
 import { Client, Message, MessageEmbed, TextChannel } from 'discord.js';
 import { Command } from '@bot/command';
+import { ServiceCreateCommand } from '@bot/commands/service-create';
 import { SetupCommand } from '@bot/commands/setup';
 import { EventBus, EventBusTopic } from '@bot/event-bus';
 import localize from '@config/localize';
@@ -19,7 +20,7 @@ export class MonitoringBot {
 
         this.eventBus.subscribe(EventBusTopic.INCIDENT_UPDATE, this.updateIncident.bind(this));
 
-        this.commands = [new SetupCommand(eventBus)];
+        this.commands = [new SetupCommand(eventBus), new ServiceCreateCommand(eventBus)];
     }
 
     public attachToClient(client: Client): void {
