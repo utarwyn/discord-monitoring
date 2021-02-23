@@ -18,9 +18,10 @@ export class CachetService extends Service<any> {
                 this.id
             );
 
-            const newImportantIncident = !row && incident.status !== CachetIncidentStatusEnum.FIXED;
-
-            if (newImportantIncident || incident.updatedAt.getTime() > row?.updated_at) {
+            if (
+                (!row && incident.status !== CachetIncidentStatusEnum.FIXED) ||
+                (row && row.last_state !== incident.state)
+            ) {
                 const newMessageId = await this.manager.client.updateIncident({
                     channelId: this.manager.alertChannels[0],
                     messageId: row?.message_id,
@@ -28,7 +29,7 @@ export class CachetService extends Service<any> {
                         title: incident.name,
                         status: CachetIncidentStatusEnum[incident.status],
                         content: incident.message,
-                        updatedAt: incident.updatedAt
+                        updatedAt: new Date()
                     }
                 });
                 await this.updateIncident(incident, newMessageId);
@@ -43,12 +44,14 @@ export class CachetService extends Service<any> {
                 incident.id,
                 this.id,
                 newMessageId,
-                incident.updatedAt.getTime()
+                incident.state,
+                Date.now()
             );
         } else {
             await this.manager.database.run(
                 DatabaseStatementEnum.UPDATE_INCIDENT,
-                incident.updatedAt.getTime(),
+                incident.state,
+                Date.now(),
                 incident.id,
                 this.id
             );

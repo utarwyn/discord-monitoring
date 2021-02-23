@@ -28,4 +28,12 @@ export class CachetIncident {
         this.updatedAt = new Date(input.updated_at);
         this.scheduledAt = new Date(input.scheduled_at);
     }
+
+    public get state(): string {
+        return JSON.stringify({
+            name: this.name,
+            message: this.message,
+            status: this.status
+        });
+    }
 }

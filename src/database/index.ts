@@ -16,7 +16,8 @@ export class MonitoringDatabase {
             id         varchar(64) not null,
             service_id int(11)     not null,
             message_id varchar(64) not null,
-            updated_at timestamp   not null
+            last_state JSON        default null,
+            updated_at timestamp   not null default current_timestamp
         );
     `;
 

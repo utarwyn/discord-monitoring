@@ -5,7 +5,7 @@ export enum DatabaseStatementEnum {
 
     INSERT_GUILD_CHANNEL = 'INSERT INTO guilds_channels VALUES(?, ?)',
     INSERT_SERVICE = 'INSERT INTO services VALUES(?, ?, ?)',
-    INSERT_INCIDENT = 'INSERT INTO incidents VALUES(?, ?, ?, ?)',
+    INSERT_INCIDENT = 'INSERT INTO incidents VALUES(?, ?, ?, ?, ?)',
 
-    UPDATE_INCIDENT = 'UPDATE incidents SET updated_at = ? WHERE id = ? AND service_id = ?'
+    UPDATE_INCIDENT = 'UPDATE incidents SET last_state = ?, updated_at = ? WHERE id = ? AND service_id = ?'
 }
