@@ -1,4 +1,4 @@
-import { MonitoringManager } from '@monitor/manager';
+import { MonitoringManager } from '@monitor/managers/manager';
 import { Service, ServiceOptions } from '@monitor/service';
 import { CachetService } from '@monitor/services/cachet-service';
 

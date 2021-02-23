@@ -2,11 +2,12 @@ import { Client, Message, MessageEmbed, TextChannel } from 'discord.js';
 import { Command } from '@bot/command';
 import { ServiceCreateCommand } from '@bot/commands/service-create';
 import { SetupCommand } from '@bot/commands/setup';
-import { EventBus, EventBusTopic } from '@bot/event-bus';
 import localize from '@config/localize';
+import { IncidentUpdateState, ManagerClient } from '@monitor/managers/manager-client';
+import { ManagerFactory } from '@monitor/managers/manager-factory';
 
-export class MonitoringBot {
-    private readonly eventBus: EventBus;
+export class MonitoringBot implements ManagerClient {
+    private readonly managerFactory: ManagerFactory;
 
     private readonly commandPrefix: string;
 
@@ -14,22 +15,20 @@ export class MonitoringBot {
 
     private client?: Client;
 
-    constructor(eventBus: EventBus, commandPrefix: string) {
-        this.eventBus = eventBus;
+    constructor(managerFactory: ManagerFactory, commandPrefix: string) {
+        this.managerFactory = managerFactory;
         this.commandPrefix = commandPrefix;
-
-        this.eventBus.subscribe(EventBusTopic.INCIDENT_UPDATE, this.updateIncident.bind(this));
-
-        this.commands = [new SetupCommand(eventBus), new ServiceCreateCommand(eventBus)];
+        this.commands = [
+            new SetupCommand(managerFactory),
+            new ServiceCreateCommand(managerFactory)
+        ];
     }
 
     public attachToClient(client: Client): void {
         this.client = client;
 
         client.on('ready', () => {
-            client.guilds.cache.map(guild =>
-                this.eventBus.publish(EventBusTopic.DISCORD_GUILD_CONNECT, guild.id)
-            );
+            client.guilds.cache.map(guild => this.managerFactory.createManager(this, guild.id));
         });
         client.on('message', this.onMessage.bind(this));
         client.on('error', console.error);
@@ -44,37 +43,36 @@ export class MonitoringBot {
                 if (!command.admin || message.member?.hasPermission('ADMINISTRATOR')) {
                     command.run(message, content.substring(command.name.length + 1).split(' '));
                 }
-            } else {
-                console.error('command not found for', content);
             }
         }
     }
 
-    private updateIncident({
-        channels,
+    public async updateIncident({
+        channelId,
+        messageId,
         incident
-    }: {
-        channels: string[];
-        incident: { [key: string]: any };
-    }): void {
-        channels.forEach(async channelId => {
-            const channel = await this.client?.channels.fetch(channelId);
-            if (channel instanceof TextChannel) {
-                channel.send(
-                    new MessageEmbed()
-                        .setTitle(incident.title)
-                        .setColor(localize.__(`incident.colors.${incident.status.toLowerCase()}`))
-                        .addField(
-                            localize.__('common.status'),
-                            localize.__(`incident.status.${incident.status.toLowerCase()}`)
-                        )
-                        .addField(
-                            localize.__('common.updated-at'),
-                            incident.updatedAt.toLocaleString(localize.getLanguage())
-                        )
-                        .setDescription(incident.content)
-                );
+    }: IncidentUpdateState): Promise<string | undefined> {
+        const embed = new MessageEmbed()
+            .setTitle(incident.title)
+            .setColor(localize.__(`incident.colors.${incident.status.toLowerCase()}`))
+            .addField(
+                localize.__('common.status'),
+                localize.__(`incident.status.${incident.status.toLowerCase()}`)
+            )
+            .addField(
+                localize.__('common.updated-at'),
+                incident.updatedAt.toLocaleString(localize.getLanguage())
+            )
+            .setDescription(incident.content);
+
+        const channel = await this.client?.channels?.fetch(channelId);
+        if (channel instanceof TextChannel) {
+            const message = await channel.messages?.fetch(messageId);
+            if (message?.editable) {
+                await message.edit(embed);
+            } else {
+                return (await channel.send(embed)).id;
             }
-        });
+        }
     }
 }

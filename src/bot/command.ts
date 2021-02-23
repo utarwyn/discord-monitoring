@@ -1,17 +1,20 @@
 import { Message } from 'discord.js';
-import { EventBus } from '@bot/event-bus';
+import { MonitoringManager } from '@monitor/managers/manager';
+import { ManagerFactory } from '@monitor/managers/manager-factory';
 
 export abstract class Command {
-    public readonly name: string;
+    public abstract name: string;
 
-    public readonly admin: boolean;
+    public abstract admin = false;
 
-    protected readonly eventBus: EventBus;
+    private readonly managers: ManagerFactory;
 
-    protected constructor(eventBus: EventBus, name: string, admin = false) {
-        this.eventBus = eventBus;
-        this.name = name;
-        this.admin = admin;
+    public constructor(managers: ManagerFactory) {
+        this.managers = managers;
+    }
+
+    public getManager(message: Message): MonitoringManager | undefined {
+        return message.guild?.id ? this.managers.get(message.guild.id) : undefined;
     }
 
     public abstract run(message: Message, params: string[]): void;

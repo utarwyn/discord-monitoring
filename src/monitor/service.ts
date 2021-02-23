@@ -1,4 +1,4 @@
-import { MonitoringManager } from '@monitor/manager';
+import { MonitoringManager } from '@monitor/managers/manager';
 
 /**
  * @author Utarwyn

@@ -1,28 +1,28 @@
-import { EventBus, EventBusTopic } from '@bot/event-bus';
 import { MonitoringDatabase } from '@database/index';
 import { GuildChannelSchema } from '@database/schemas/guild-channel.schema';
 import { ServiceSchema } from '@database/schemas/service.schema';
 import { DatabaseStatementEnum } from '@database/statement';
 import { Service, ServiceOptions } from '@monitor/service';
 import { ServiceFactory } from '@monitor/services/factory';
+import { ManagerClient } from '@monitor/managers/manager-client';
 
 /**
  * @author Utarwyn
  * @since 1.0.0
  */
 export class MonitoringManager {
-    public readonly eventBus: EventBus;
+    public readonly client: ManagerClient;
 
-    private readonly guildId: string;
+    public readonly database: MonitoringDatabase;
 
-    private readonly database: MonitoringDatabase;
+    public readonly guildId: string;
 
     private services: Service<any>[];
 
     private _alertChannels: string[];
 
-    constructor(eventBus: EventBus, guildId: string, database: MonitoringDatabase) {
-        this.eventBus = eventBus;
+    constructor(client: ManagerClient, guildId: string, database: MonitoringDatabase) {
+        this.client = client;
         this.guildId = guildId;
         this.database = database;
         this.services = [];
@@ -52,14 +52,6 @@ export class MonitoringManager {
             ServiceFactory.create(this, service.type, service.id, JSON.parse(service.options))
         );
 
-        // TODO only subscribe on a specific guild
-        this.eventBus.subscribe(EventBusTopic.DISCORD_GUILD_CHANNEL_SETUP, ({ channelId }) => {
-            this.addAlertChannel(channelId);
-        });
-        this.eventBus.subscribe(EventBusTopic.SERVICE_CREATE, ({ type, options }) => {
-            this.addService(type, options);
-        });
-
         this.services.forEach(service => service.start());
         setInterval(this.update.bind(this), 60000);
     }
@@ -77,17 +69,14 @@ export class MonitoringManager {
 
     public async addService(type: string, options: ServiceOptions): Promise<void> {
         try {
-            const id = this.services.length;
-            const service = ServiceFactory.create(this, type, id, options);
-
-            await this.database.run(
+            const insertion = await this.database.run(
                 DatabaseStatementEnum.INSERT_SERVICE,
-                id,
                 this.guildId,
                 type,
                 JSON.stringify(options)
             );
 
+            const service = ServiceFactory.create(this, type, insertion.lastID, options);
             this.services.push(service);
             service.start();
         } catch (e) {

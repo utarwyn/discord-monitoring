@@ -1,22 +1,20 @@
-import { Database, Statement } from 'sqlite3';
+import { Database, RunResult, Statement } from 'sqlite3';
 import { DatabaseStatementEnum } from '@database/statement';
 
 export class MonitoringDatabase {
     private static readonly SETUP = `
-        CREATE TABLE IF NOT EXISTS guilds_channels(
+        CREATE TABLE IF NOT EXISTS guilds_channels (
             guild_id   varchar(64) not null,
             channel_id varchar(64) not null
         );
         CREATE TABLE IF NOT EXISTS services (
-            id       int(11)     not null primary key,
             guild_id varchar(64) not null,
             type     varchar(32) not null,
             options  JSON        not null default '{}'
         );
         CREATE TABLE IF NOT EXISTS incidents (
-            id         int(11)     not null primary key,
+            id         varchar(64) not null,
             service_id int(11)     not null,
-            guild_id   varchar(64) not null,
             message_id varchar(64) not null,
             updated_at timestamp   not null
         );
@@ -60,11 +58,11 @@ export class MonitoringDatabase {
         });
     }
 
-    public async run(statement: DatabaseStatementEnum, ...params: any[]): Promise<void> {
+    public async run(statement: DatabaseStatementEnum, ...params: any[]): Promise<RunResult> {
         return new Promise((resolve, reject) => {
-            this.statements.get(statement)?.run(params, (err: Error) => {
+            this.statements.get(statement)?.run(params, function (err: Error) {
                 if (!err) {
-                    resolve();
+                    resolve(this);
                 } else {
                     reject(err);
                 }
