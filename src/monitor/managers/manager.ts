@@ -2,9 +2,9 @@ import { MonitoringDatabase } from '@database/index';
 import { GuildChannelSchema } from '@database/schemas/guild-channel.schema';
 import { ServiceSchema } from '@database/schemas/service.schema';
 import { DatabaseStatementEnum } from '@database/statement';
+import { ManagerClient } from '@monitor/managers/manager-client';
 import { Service, ServiceOptions } from '@monitor/service';
 import { ServiceFactory } from '@monitor/services/factory';
-import { ManagerClient } from '@monitor/managers/manager-client';
 
 /**
  * @author Utarwyn

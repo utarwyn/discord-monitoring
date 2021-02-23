@@ -25,6 +25,7 @@ export class CachetService extends Service<any> {
                 const newMessageId = await this.manager.client.updateIncident({
                     channelId: this.manager.alertChannels[0],
                     messageId: row?.message_id,
+                    mentions: this.options.mentions,
                     incident: {
                         title: incident.name,
                         status: CachetIncidentStatusEnum[incident.status],

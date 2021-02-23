@@ -1,4 +1,4 @@
-import { Client, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Client, DMChannel, Message, MessageEmbed, NewsChannel, TextChannel } from 'discord.js';
 import { Command } from '@bot/command';
 import { ServiceCreateCommand } from '@bot/commands/service-create';
 import { SetupCommand } from '@bot/commands/setup';
@@ -50,6 +50,7 @@ export class MonitoringBot implements ManagerClient {
     public async updateIncident({
         channelId,
         messageId,
+        mentions,
         incident
     }: IncidentUpdateState): Promise<string | undefined> {
         const embed = new MessageEmbed()
@@ -66,13 +67,25 @@ export class MonitoringBot implements ManagerClient {
             .setDescription(incident.content);
 
         const channel = await this.client?.channels?.fetch(channelId);
-        if (channel instanceof TextChannel) {
+        if (channel?.isText()) {
             const message = await channel.messages?.fetch(messageId);
             if (message?.editable) {
                 await message.edit(embed);
             } else {
-                return (await channel.send(embed)).id;
+                const newMessageId = (await channel.send(embed)).id;
+                if (mentions) {
+                    await MonitoringBot.mentionRoles(channel, mentions);
+                }
+                return newMessageId;
             }
         }
+    }
+
+    private static async mentionRoles(
+        channel: TextChannel | DMChannel | NewsChannel,
+        roleIds: string[]
+    ): Promise<void> {
+        const message = roleIds.map(roleId => `<@&${roleId}>`).join(' ');
+        await (await channel.send(message)).delete();
     }
 }

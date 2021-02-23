@@ -24,4 +24,5 @@ export abstract class Service<T extends ServiceOptions> {
 
 export interface ServiceOptions {
     endpoint: string;
+    mentions: string[];
 }

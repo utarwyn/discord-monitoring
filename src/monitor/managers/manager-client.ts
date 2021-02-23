@@ -5,5 +5,6 @@ export interface ManagerClient {
 export interface IncidentUpdateState {
     channelId: string;
     messageId: string;
+    mentions: string[];
     incident: any;
 }
