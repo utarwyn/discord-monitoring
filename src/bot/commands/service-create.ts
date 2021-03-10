@@ -15,7 +15,7 @@ export class ServiceCreateCommand extends Command {
         const endpoint = params[1];
         const mentions = message.mentions.roles.mapValues(role => role.id).array();
 
-        this.getManager(message)?.addService(type, { endpoint, mentions });
+        this.getManager(message)?.addService(type, { endpoint, mentions, filters: {} });
         await message.delete();
     }
 }

@@ -60,11 +60,15 @@ export class CachetService extends Service<any> {
     }
 
     private async getLastIncident(): Promise<CachetIncident | undefined> {
+        const filters = Object.keys(this.options.filters)?.map(
+            key => `&${key}=${this.options.filters[key]}`
+        );
         const incidents = (
             await Util.fetch(
-                `${this.options.endpoint}/api/v1/incidents?sort=id&order=desc&per_page=1`
+                `${this.options.endpoint}/api/v1/incidents?sort=id&order=desc&per_page=5${filters}`
             )
         )?.data;
+
         return incidents.length > 0 ? new CachetIncident(incidents[0]) : undefined;
     }
 }

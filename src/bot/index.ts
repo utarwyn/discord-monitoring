@@ -73,7 +73,7 @@ export class MonitoringBot implements ManagerClient {
                 await message.edit(embed);
             } else {
                 const newMessageId = (await channel.send(embed)).id;
-                if (mentions) {
+                if (mentions?.length > 0) {
                     await MonitoringBot.mentionRoles(channel, mentions);
                 }
                 return newMessageId;
