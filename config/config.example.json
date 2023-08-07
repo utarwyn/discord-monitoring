@@ -1,6 +1,5 @@
 {
   "token": "",
   "language": "en",
-  "prefix": "m$",
   "databaseFilePath": "monitoring.db"
 }

@@ -1,4 +1,8 @@
-# Discord Monitoring Bot
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://i.imgur.com/NjcoSvR.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://i.imgur.com/RB468qr.png">
+  <img alt="Discord Monitoring logo" src="https://i.imgur.com/RB468qr.png">
+</picture>
 
 <h4 align="center">
 Keep an eye on all your services directly on your Discord server!
@@ -7,35 +11,37 @@ Created with <a href="https://github.com/discordjs/discord.js">discord.js</a>.
 </h4>
 
 <p align="center">
-    <a href="https://github.com/utarwyn/discord-monitoring/actions">
-        <img src="https://github.com/utarwyn/discord-monitoring/workflows/Node.js%20CI/badge.svg" alt="Node.js CI">
-    </a>
-    <a href="https://hub.docker.com/r/utarwyn/discord-monitoring">
-        <img src="https://img.shields.io/docker/cloud/build/utarwyn/discord-monitoring" alt="Docker Build status">
-    </a>
-    <a href="https://github.com/utarwyn/discord-monitoring/releases">
-        <img src="https://img.shields.io/github/package-json/v/utarwyn/discord-monitoring" alt="Npm version">
-    </a>
-    <a href="https://github.com/utarwyn/discord-monitoring/blob/main/LICENSE">
-        <img src="https://img.shields.io/github/license/utarwyn/discord-monitoring" alt="License">
-    </a>
+    <img src="https://i.imgur.com/27F7evu.png" alt="demo">
 </p>
 
-Currently under development.
--------
+"Discord Monitoring" is a **self-hosted NodeJS bot** which allows you to monitor all kind of services in real time and
+post updates into your Discord channels. This way, you get the information you need **as soon as possible**, so you can
+react accordingly!
+
+⚠ This project is in a very early stage and is not ready for production.
+
+Getting started
+--------
+
+1. Clone the repository
+2. Install dependencies using `yarn install`
+3. Build the module using `yarn build`
+4. Create a config file in the config folder based on the example
+5. Start the module using `yarn start`
+6. Deploy commands inside your Discord server by mentionning your bot with "*deploy*"\
+   Example: `@MonitoringBot deploy`
 
 License
 --------
 
-"Discord Monitoring" is an open-sourced software licensed under the [Apache-2.0 license][3].
+"Discord Monitoring" is an open-sourced software licensed under the [Apache-2.0 license][1].
 
 ---
-> GitHub [@utarwyn][4] &nbsp;&middot;&nbsp; Twitter [@Utarwyn][5]
+> GitHub [@utarwyn][2] &nbsp;&middot;&nbsp; Twitter [@Utarwyn][3]
 
 
-[1]: https://hub.docker.com/r/utarwyn/discord-monitoring
-[2]: https://www.npmjs.com/package/discord-monitoring
-[3]: https://github.com/utarwyn/discord-monitoring/blob/main/LICENSE
-[4]: https://github.com/utarwyn
-[5]: https://twitter.com/Utarwyn
-[6]: https://discordapp.com/developers/applications
+[1]: https://github.com/utarwyn/discord-monitoring/blob/main/LICENSE
+
+[2]: https://github.com/utarwyn
+
+[3]: https://twitter.com/Utarwyn
