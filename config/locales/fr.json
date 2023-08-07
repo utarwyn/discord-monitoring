@@ -3,6 +3,10 @@
     "status": "Statut",
     "updated-at": "Mis à jour le"
   },
+  "commands": {
+    "channel_added": "Canal ajouté",
+    "service_added": "Service ajouté"
+  },
   "incident": {
     "colors": {
       "scheduled": "#e67e22",

@@ -12,10 +12,6 @@ export interface Config {
      */
     language?: string;
     /**
-     * Prefix for all module's commands.
-     */
-    prefix?: string;
-    /**
      * Path where to store internal database.
      */
     databaseFilePath?: string;

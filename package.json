@@ -1,6 +1,6 @@
 {
   "name": "discord-monitoring",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Ultimate Discord bot to get all services status in your server",
   "author": "Utarwyn <maximemalgorn@gmail.com>",
   "license": "Apache-2.0",
@@ -8,6 +8,11 @@
   "bin": {
     "monitoring": "dist/bin/monitoring.js"
   },
+  "files": [
+    "config/locales",
+    "dist/bin",
+    "dist/src"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/utarwyn/discord-monitoring.git"
@@ -24,43 +29,41 @@
     "url": "https://github.com/utarwyn/discord-monitoring/issues"
   },
   "homepage": "https://github.com/utarwyn/discord-monitoring#readme",
-  "devDependencies": {
-    "@types/i18n": "^0.8.8",
-    "@types/jest": "~25.2.1",
-    "@types/node": "^14.14.20",
-    "@types/sqlite3": "^3.1.7",
-    "@types/ws": "^7.4.0",
-    "@typescript-eslint/eslint-plugin": "~2.32.0",
-    "@typescript-eslint/parser": "~2.32.0",
-    "eslint": "~7.0.0",
-    "eslint-config-prettier": "~6.11.0",
-    "eslint-plugin-jest": "~23.10.0",
-    "jest": "~25.2.7",
-    "prettier": "~2.0.5",
-    "replace-in-file": "^6.0.0",
-    "rimraf": "~3.0.2",
-    "ts-jest": "~25.5.1",
-    "typescript": "~3.8.3"
-  },
   "dependencies": {
-    "discord.js": "^12.5.1",
-    "i18n": "^0.10.0",
-    "sqlite3": "^5.0.2"
+    "discord.js": "14.12.1",
+    "sqlite3": "5.1.6"
+  },
+  "devDependencies": {
+    "@types/jest": "29.5.3",
+    "@types/node": "16.18.39",
+    "@types/sqlite3": "3.1.8",
+    "@types/ws": "8.5.5",
+    "@typescript-eslint/eslint-plugin": "6.3.0",
+    "@typescript-eslint/parser": "6.3.0",
+    "eslint": "8.46.0",
+    "eslint-config-prettier": "9.0.0",
+    "eslint-plugin-jest": "27.2.3",
+    "jest": "29.6.2",
+    "prettier": "3.0.1",
+    "replace-in-file": "7.0.1",
+    "rimraf": "5.0.1",
+    "ts-jest": "29.1.1",
+    "typescript": "5.1.6"
   },
   "engines": {
-    "node": ">= 14.0.0"
+    "node": ">= 16.9.0"
   },
   "scripts": {
     "clean": "rimraf coverage build tmp",
-    "build": "tsc -p tsconfig.release.json",
+    "build": "tsc -p tsconfig.release.json && node lib/replacePaths.js",
     "build:watch": "tsc -w -p tsconfig.release.json",
-    "format:check": "prettier --config .prettierrc --list-different \"**/**.ts\"",
-    "format": "prettier --config .prettierrc --write \"**/**.ts\"",
-    "lint": "eslint . --ext .ts,.tsx",
-    "serve": "node lib/replacePaths.js && node dist/bin/monitoring.js",
-    "start": "npm run build && npm run serve",
+    "format:check": "prettier --check \"**/**.ts\"",
+    "format": "prettier --write \"**/**.ts\"",
+    "lint": "eslint . --ext .ts",
+    "serve": "node dist/bin/monitoring.js",
+    "start": "yarn build && yarn serve",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "release": "npm run clean && npm run lint && npm run test && npm run format && npm run build && node lib/replacePaths.js"
+    "release": "yarn clean && yarn lint && yarn test && yarn format && yarn build"
   }
 }

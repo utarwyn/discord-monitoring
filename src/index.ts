@@ -1,7 +1,7 @@
-import { Client } from 'discord.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 import { MonitoringBot } from '@bot/index';
-import { Config } from '@config/config';
-import localize from '@config/localize';
+import { Config } from '@config/Config';
+import localize from '@i18n/localize';
 import { MonitoringDatabase } from '@database/index';
 import { ManagerFactory } from '@monitor/managers/manager-factory';
 
@@ -20,16 +20,13 @@ class Monitoring {
         this.configuration = configuration ?? {};
 
         if (this.configuration.language) {
-            localize.setLanguage(this.configuration.language);
+            localize.loadFromLocale(this.configuration.language);
         }
 
         const database = new MonitoringDatabase(
             this.configuration.databaseFilePath ?? 'monitoring.db'
         );
-        this.bot = new MonitoringBot(
-            new ManagerFactory(database),
-            this.configuration.prefix ?? 'm$'
-        );
+        this.bot = new MonitoringBot(new ManagerFactory(database));
     }
 
     public async login(token?: string): Promise<void> {
@@ -39,7 +36,9 @@ class Monitoring {
             throw new Error('Bot token needed to start Discord client.');
         }
 
-        const client = new Client();
+        const client = new Client({
+            intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
+        });
         this.bot.attachToClient(client);
         await client.login(loginToken);
     }

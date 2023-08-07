@@ -3,19 +3,19 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "target": "es6",
+    "target": "es2021",
     "strict": true,
     "outDir": "dist",
-    "lib": ["es2017"],
+    "lib": ["es2021"],
     "baseUrl": ".",
     "paths": {
       "@bot/*": ["src/bot/*"],
       "@config/*": ["src/config/*"],
       "@database/*": ["src/database/*"],
+      "@i18n/*": ["src/i18n/*"],
       "@monitor/*": ["src/monitor/*"]
     },
     "incremental": true
   },
-  "include": ["src/**/*", "bin/**/*"],
-  "exclude": ["**/__tests__"]
+  "include": ["src/**/*", "bin/**/*"]
 }

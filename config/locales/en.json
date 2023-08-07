@@ -3,6 +3,10 @@
     "status": "Status",
     "updated-at": "Updated at"
   },
+  "commands": {
+    "channel_added": "This channel can now receive alerts",
+    "service_added": "Service has been added"
+  },
   "incident": {
     "colors": {
       "scheduled": "#e67e22",
